@@ -38,3 +38,10 @@ class Unit(models.Model):
     About = models.TextField()
     Classes = models.IntegerField(blank = True, null = True)
     Day_Time = models.DateTimeField(verbose_name = "Date/Time", name=None, auto_now = False, auto_now_add=False)
+
+class Department(models.Model):
+    Department = models.CharField(max_length = 300, unique = True, blank = True, null = True)
+    Dept_code = models.CharField(max_length = 300, unique = True, blank = True, null = True)
+    School = models.ForeignKey(School, verbose_name = "School", unique = True, on_delete=models.CASCADE)
+    Courses = models.ForeignKey(Course, verbose_name = "Courses", unique = True, on_delete=models.CASCADE)
+    Units = models.ForeignKey(Unit, verbose_name = "Units", unique = True, on_delete=models.CASCADE)
