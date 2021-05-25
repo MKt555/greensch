@@ -1,0 +1,16 @@
+{%extends "register.html"%}
+
+{%block content%}
+        <title>Tutor Registration</title>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <h1>Register</h1>
+        <div>
+            <form action="{%url 'tutor_registration' %}" method="post" novalidate>
+                {% csrf_token %}
+                {{ form.as_p }}
+            <input type="submit" value="Submit">
+            </form>
+        </div>
+{% endblock content %}

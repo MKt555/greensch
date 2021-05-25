@@ -1,11 +1,26 @@
-{% extends 'base.html' %}
+{%extends "base.html"%}
+{% load materializecss %}
+<title>Home</title>
 
-
-{% block content %}
-   <title>Home</title>
-   <div>
-       <h1></h1>
-       <p>Welcome to the official website of UniUni</p>
+<body>
+<div class = "container">
+<br>
+{%block content%}
+   <nav>
+       <div class ="nav-wrapper">
+           <h1>Welcome to the official website of UniUni</h1>
+           <ul id = "nav-mobile" class = "right hide-on-med-and-down">
+               <li><h3>Browse all our programmes<a href="http://127.0.0.1:8000/academy/" target ="_blank">  Academy  </a></h3></li>
+               <li><h3>Join our dynamic, brilliant community of educators and students<a href="http://127.0.0.1:8000/accounts/register" target ="_blank"> Register </a></h3></li>
+               <li><h3>Already have an account?<a href="/login" target ="_self"> Login </a></h3></li>
+            </ul>  
+        </div>   
+   </nav>
+   {%if messages%}
+       {%for message in messages%}
+           <script>M.toast({html : "{{message}}", classes: 'blue rounded'}, display_length:2000);</script>
+       {%endfor%}
+   {%endif%}
+{%endblock content%}
    </div>
-   <a href="http://127.0.0.1:8000/academy/" target ="_blank">Find all our study programmes/</a>
-{% endblock content %}
+</body 

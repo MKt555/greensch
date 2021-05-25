@@ -1,6 +1,5 @@
 from django.contrib.auth.base_user import BaseUserManager
-from academy.models import  School, Level, Certification, Course, Unit, Department
-from django.db import models
+from academy.models import models
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, User
@@ -39,19 +38,24 @@ class CustomAccountsManager(BaseUserManager):
         user.save()
         return User
 
-    
+def user_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+    return 'user_{0}/{1}'.format(instance.user.id, filename)
+
+
 class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=200, blank=True)
     last_name = models.CharField(max_length=200, blank=True)
     email = models.EmailField(_('email address'), unique = True)   
     Date_joined = models.DateTimeField(default = timezone.now)
     is_student = models.BooleanField(default=False)
-    is_teacher = models.BooleanField(default=False)
+    is_tutor = models.BooleanField(default=False)
     is_staff = models.BooleanField(default = False)
     is_active  = models.BooleanField(default = False)
+    upload = models.FileField(upload_to=user_directory_path)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first-name, last_name']
+    REQUIRED_FIELDS = ['first_name, last_name']
 
     objects = CustomAccountsManager()
 
@@ -61,20 +65,22 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE)
-    School = models.ForeignKey(School, on_delete = models.CASCADE)
-    Level = models.ForeignKey(Level, on_delete = models.CASCADE)
-    Certification = models.ForeignKey(Certification, on_delete = models.CASCADE)
-    Course = models.ForeignKey(Course, on_delete = models.CASCADE)
+    School = models.ForeignKey("academy.School", on_delete = models.CASCADE)
+    Level = models.ForeignKey("academy.Level", on_delete = models.CASCADE)
+    Certification = models.ForeignKey("academy.Certification", on_delete = models.CASCADE)
+    Course = models.ForeignKey("academy.Course", on_delete = models.CASCADE)
     registration_number = models.CharField(max_length=50, primary_key = True,  unique = True, null=False, blank=False)
+    document = models.FileField(upload_to='documents/%Y/%m/%d/')
 
 class Tutor(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE)
     Title = models.CharField(max_length=20)
-    Department = models.ForeignKey(Department, on_delete = models.CASCADE)
-    Units = models.ForeignKey(Unit, on_delete = models.CASCADE)
+    Department = models.ForeignKey("academy.Department", on_delete = models.CASCADE)
+    Units = models.ForeignKey("academy.Unit", on_delete = models.CASCADE)
     About = models.TextField()
     payroll_no = models.CharField(max_length=50, unique = True, null=False, blank=False)
     email = models.EmailField(verbose_name="Email Address", max_length = 100, unique=True)
+    document = models.FileField(upload_to='documents/%Y/%m/%d/')
 
     
 

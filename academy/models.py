@@ -1,4 +1,5 @@
 from django.db import models
+from accounts.models import User
 
 # Create your models here.
 class School(models.Model):
@@ -10,7 +11,7 @@ class School(models.Model):
         return self.Name
 
 class Level(models.Model):
-    Level = models.CharField(max_length = 300, unique = True, blank = True, null = True) 
+    Study_Level = models.CharField(max_length = 300, unique = True, blank = True, null = True) 
 
 
 class Certification(models.Model):
@@ -41,7 +42,17 @@ class Unit(models.Model):
 
 class Department(models.Model):
     Department = models.CharField(max_length = 300, unique = True, blank = True, null = True)
+    About = models.TextField()
     Dept_code = models.CharField(max_length = 300, unique = True, blank = True, null = True)
     School = models.ForeignKey(School, verbose_name = "School", on_delete=models.CASCADE)
     Courses = models.ForeignKey(Course, verbose_name = "Courses", on_delete=models.CASCADE)
     Units = models.ForeignKey(Unit, verbose_name = "Units", on_delete=models.CASCADE)
+
+class Document(models.Model):
+    name = models.CharField(max_length = 100, unique = True,  blank = True, null = True)
+    description = models.CharField(max_length=255, blank=True)
+    file = models.FileField(upload_to='document/%Y/%m/%d/', null=True, verbose_name="")
+    unit = models.ForeignKey(Unit,verbose_name = "Course",  on_delete=models.CASCADE)
+    uploaded_by = models.ForeignKey(User,verbose_name = "User", on_delete=models.CASCADE)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
