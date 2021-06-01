@@ -43,8 +43,9 @@ def user_directory_path(instance, filename):
     return 'user_{0}/{1}'.format(instance.user.id, filename)
 
 
+
 class User(AbstractBaseUser, PermissionsMixin):
-    first_name = models.CharField(max_length=200, blank=True)
+    first_name = models.CharField(max_length=500, blank=True)
     last_name = models.CharField(max_length=200, blank=True)
     email = models.EmailField(_('email address'), unique = True)   
     Date_joined = models.DateTimeField(default = timezone.now)
@@ -54,13 +55,24 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active  = models.BooleanField(default = False)
     upload = models.FileField(upload_to=user_directory_path)
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name, last_name']
+    if User == "Student":
+        USERNAME_FIELD = 'registration_number'
+        REQUIRED_FIELDS = ['first_name', 'last_name', 'School', 'Level', 'Certification', 'Course']
+
+    elif  User == "Tutor":
+        USERNAME_FIELD = 'email'
+        REQUIRED_FIELDS = ['first_name', 'last_name', 'Department', 'Units']
+
+    else:
+        USERNAME_FIELD = 'email'
+        REQUIRED_FIELDS = ['first_name', 'last_name']
 
     objects = CustomAccountsManager()
 
-
     def __str__(self):
+        return self.first_name + " " + self.last_name
+
+    def Name(self):
         return self.first_name + " " + self.last_name
 
 class Student(models.Model):
@@ -69,7 +81,11 @@ class Student(models.Model):
     Level = models.ForeignKey("academy.Level", on_delete = models.CASCADE)
     Certification = models.ForeignKey("academy.Certification", on_delete = models.CASCADE)
     Course = models.ForeignKey("academy.Course", on_delete = models.CASCADE)
+    Units = models.ForeignKey("academy.Unit", on_delete = models.CASCADE)
+    email = models.EmailField(verbose_name="Email Address", max_length=200, unique=True)
     registration_number = models.CharField(max_length=50, primary_key = True,  unique = True, null=False, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     document = models.FileField(upload_to='documents/%Y/%m/%d/')
 
 class Tutor(models.Model):
@@ -81,6 +97,7 @@ class Tutor(models.Model):
     payroll_no = models.CharField(max_length=50, unique = True, null=False, blank=False)
     email = models.EmailField(verbose_name="Email Address", max_length = 100, unique=True)
     document = models.FileField(upload_to='documents/%Y/%m/%d/')
+    Academic_Credentials = models.FileField(upload_to='documents/%Y/%m/%d/')
 
     
 

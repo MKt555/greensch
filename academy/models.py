@@ -1,6 +1,9 @@
 from django.db import models
 from accounts.models import User
 
+import datetime
+import random
+
 # Create your models here.
 class School(models.Model):
     Name = models.CharField(max_length= 50, blank = True, null = True)
@@ -31,7 +34,19 @@ class Course(models.Model):
 
     def __str__(self): 
         return self.Course_Title + self.School + self.Certification
-    
+
+    def generate_registration_number(self,code,digit,time):
+        time_now = datetime.datetime.now()
+        code = self.Course_code
+        time = str(time_now.year)
+        numbers = {}
+        digit = str(random.randrange(0000, 51000, 1))
+        numbers.add(digit)
+        registration_number = code + "/"+digit+"/"+time
+
+        return registration_number
+        
+
 class Unit(models.Model):
     Course = models.ForeignKey(Course, verbose_name = "Course", on_delete=models.CASCADE)
     Unit_Title = models.CharField(max_length = 30, unique = True,  blank = True, null = True) 
