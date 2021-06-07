@@ -1,6 +1,7 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import authenticate
 
-from django.contrib.auth.forms import UserCreationForm
 from .models import  Student, User, Tutor
 from academy.models import Course
 from django.db import transaction
@@ -26,7 +27,8 @@ class StudentSignUpForm(UserCreationForm):
         user = super().save(commit = False)
         user.is_student = True
         user.is_staff = False
-        user.get_full_name = self.cleaned_data.get('Name')
+        user.first_name = self.cleaned_data.get('First Name')
+        user.last_name = self.cleaned_data.get('Last Name')
         user.save()
         Student = Student.objects.create(user=user)
         Student.School = self.cleaned_data.get('School')
@@ -60,7 +62,8 @@ class TutorSignUpForm(UserCreationForm):
         user = super().save(commit = False)
         user.is_tutor = True
         user.is_tutor = True
-        user.get_full_name = self.cleaned_data.get('Name')
+        user.first_name = self.cleaned_data.get('First Name')
+        user.last_name = self.cleaned_data.get('Last Name')
         user.save()
         Tutor = Tutor.objects.create(user=user)
         Tutor.Department = self.cleaned_data.get('Department')
@@ -69,3 +72,37 @@ class TutorSignUpForm(UserCreationForm):
         Tutor.password=self.cleaned_data.get('password')
         Tutor.save()
         return Tutor
+
+
+class StudentLoginForm(forms.ModelForm):
+    registration_number = forms.CharField(label = 'Registration Number', widget=forms.TextInput)
+    password = forms.CharField(label ='Password', widget=forms.PasswordInput)
+        
+    class Meta:
+        model = User
+        fields = ('registration_number', 'password')
+
+    def clean(self):
+        if self.is_valid():
+            registration_number = self.cleaned_data['registration_number']
+            password = self.cleaned_data['password']
+
+        if not authenticate(registration_number=registration_number, password = password):
+            raise forms.ValidationError("Invalid registration number or password.")
+
+
+class TutorLoginForm(forms.ModelForm):
+    password = forms.CharField(label ='Password', widget=forms.PasswordInput)
+        
+    class Meta:
+        model = User
+        fields = ('email', 'password')
+
+    def clean(self):
+        if self.is_valid():
+            email = self.cleaned_data['email']
+            password = self.cleaned_data['password']
+
+        if not authenticate(registration_number=email, password = password):
+            raise forms.ValidationError("Invalid email or password.")
+

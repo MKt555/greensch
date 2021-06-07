@@ -20,12 +20,16 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from main.views import homescreen_view
+from accounts.views import login_view, student_login_request, tutor_login_request
 
 urlpatterns = [
     path('', homescreen_view),
     path('main/', include('main.urls')),
     path('academy/', include('academy.urls')),
     path('accounts/', include('accounts.urls')),
+    path('login/', login_view, name = 'login'),
+    path('student_login/', student_login_request.as_view(), name = 'student_login'),
+    path('tutor_login/', tutor_login_request.as_view(), name = 'tutor_login'),
     path('admin/', admin.site.urls),
 ]
 if settings.DEBUG:
