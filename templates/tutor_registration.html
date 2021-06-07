@@ -1,4 +1,3 @@
-{%extends "register.html"%}
 {% if messages %}
     {% for message in messages %}
         {% if message.tags == 'success'%}
@@ -14,15 +13,12 @@
 {% endif %}
 {%block content%}
         <title>Tutor Registration</title>
-        <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
         <h1>Tutor Registration</h1>
         <nav>
             <div>
                 <form action="{%url 'tutor_registration' %}" method="post" novalidate>
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    {{tutor_signup_form.as_p}}
                     <input type="submit" value="Submit">
                 </form>
             </div>

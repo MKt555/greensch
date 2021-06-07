@@ -15,10 +15,10 @@
             <div class="container">
                 <form method="POST">
                    {% csrf_token %}
-                   {{tutor_login_form.email.label.as_p}}
-                   {{tutor_login_form.email.as_p}}
-                   {{tutor_login_form.password.label.as_p}}
-                   {{tutor_login_form.password.as_p}}
+                   {{tutor_login_form.email.label}}
+                   {{tutor_login_form.email}}
+                   {{tutor_login_form.password.label}}
+                   {{tutor_login_form.password}}
                 </form>
             </div>
 

@@ -28,8 +28,8 @@ urlpatterns = [
     path('academy/', include('academy.urls')),
     path('accounts/', include('accounts.urls')),
     path('login/', login_view, name = 'login'),
-    path('student_login/', student_login_request.as_view(), name = 'student_login'),
-    path('tutor_login/', tutor_login_request.as_view(), name = 'tutor_login'),
+    path('student_login/', student_login_request, name = 'student_login'),
+    path('tutor_login/', tutor_login_request, name = 'tutor_login'),
     path('admin/', admin.site.urls),
 ]
 if settings.DEBUG:
