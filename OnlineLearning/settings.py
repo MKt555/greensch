@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'accounts',
     'materializecssform',
     'django_secrets',
+    
+    'multiselectfield',
 ]
 
 

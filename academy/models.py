@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import User
+from multiselectfield import MultiSelectField
 
 import datetime
 import random
@@ -55,6 +56,7 @@ class Unit(models.Model):
     Classes = models.IntegerField(blank = True, null = True)
     Day_Time = models.DateTimeField(verbose_name = "Date/Time", name=None, auto_now = False, auto_now_add=False)
 
+
 class Department(models.Model):
     Department = models.CharField(max_length = 300, unique = True, blank = True, null = True)
     About = models.TextField()
@@ -64,10 +66,22 @@ class Department(models.Model):
     Units = models.ForeignKey(Unit, verbose_name = "Units", on_delete=models.CASCADE)
 
 class Document(models.Model):
+    Document_CHOICES = (
+        ('Student Complete Assignment', 'Student Complete Assignment'),
+        ('Tutor Issued Assignment', 'Tutor Issued Assignment'),
+        ('Student Learning Resourse', 'Student Learning Resourse' )
+    )
+
+    Document_type = MultiSelectField(choices = Document_CHOICES)
     name = models.CharField(max_length = 100, unique = True,  blank = True, null = True)
     description = models.CharField(max_length=255, blank=True)
     file = models.FileField(upload_to='document/%Y/%m/%d/', null=True, verbose_name="")
     unit = models.ForeignKey(Unit,verbose_name = "Course",  on_delete=models.CASCADE)
     uploaded_by = models.ForeignKey(User,verbose_name = "User", on_delete=models.CASCADE)
     uploaded_at = models.DateTimeField(auto_now_add=True)
+
+class Assignment(models.Model):
+    Assignment_Document =  models.ForeignKey(Document, max_length = 100)
+    file = models.FileField(upload_to='assignment/%Y/%m/%d/', null=True, verbose_name="")
+
 
