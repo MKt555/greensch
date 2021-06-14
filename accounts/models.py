@@ -53,7 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_tutor = models.BooleanField(default=False)
     is_staff = models.BooleanField(default = False)
     is_active  = models.BooleanField(default = False)
-    upload = models.FileField(upload_to=user_directory_path)
+    upload = models.FileField(upload_to=user_directory_path, default='')
 
     if User == "Student":
         USERNAME_FIELD = 'registration_number'
@@ -77,27 +77,32 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE)
-    School = models.ForeignKey("academy.School", on_delete = models.CASCADE)
-    Level = models.ForeignKey("academy.Level", on_delete = models.CASCADE)
-    Certification = models.ForeignKey("academy.Certification", on_delete = models.CASCADE)
-    Course = models.ForeignKey("academy.Course", on_delete = models.CASCADE)
-    Units = models.ForeignKey("academy.Unit", on_delete = models.CASCADE)
-    email = models.EmailField(verbose_name="Email Address", max_length=200, unique=True)
-    registration_number = models.CharField(max_length=50, primary_key = True,  unique = True, null=False, blank=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    document = models.FileField(upload_to='documents/%Y/%m/%d/')
+    School = models.ForeignKey("academy.School", on_delete = models.CASCADE, default= '')
+    Level = models.ForeignKey("academy.Level", on_delete = models.CASCADE, default= '')
+    Certification = models.ForeignKey("academy.Certification", on_delete = models.CASCADE, default= '')
+    Course = models.ForeignKey("academy.Course", on_delete = models.CASCADE, default= '')
+    Units = models.ForeignKey("academy.Unit", on_delete = models.CASCADE, default= '')
+    email = models.EmailField(verbose_name="Email Address", max_length=200, unique=True, default= '')
+    registration_number = models.CharField(max_length=50, primary_key = True,  unique = True, default= '')
+    created_at = models.DateTimeField(default=timezone.now, editable=False)
+    updated_at = models.DateTimeField(default = '')
+    document = models.FileField(upload_to='documents/%Y/%m/%d/', default= '')
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.created = timezone.now()
+        self.modified = timezone.now()
+        return super(Student, self).save(*args, **kwargs)
 
 class Tutor(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE)
-    Title = models.CharField(max_length=20)
-    Department = models.ForeignKey("academy.Department", on_delete = models.CASCADE)
-    Units = models.ForeignKey("academy.Unit", on_delete = models.CASCADE)
-    About = models.TextField()
-    payroll_no = models.CharField(max_length=50, unique = True, null=False, blank=False)
-    email = models.EmailField(verbose_name="Email Address", max_length = 100, unique=True)
-    document = models.FileField(upload_to='documents/%Y/%m/%d/')
-    Academic_Credentials = models.FileField(upload_to='documents/%Y/%m/%d/')
+    Title = models.CharField(max_length=20, default = '')
+    Department = models.ForeignKey("academy.Department", on_delete = models.CASCADE, default= '')
+    Units = models.ForeignKey("academy.Unit", on_delete = models.CASCADE, default= '')
+    About = models.TextField(default= '')
+    email = models.EmailField(verbose_name="Email Address", max_length = 100, unique=True, default= '')
+    document = models.FileField(upload_to='documents/%Y/%m/%d/', unique = True, null=False, default= '')
 
     
 

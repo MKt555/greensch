@@ -80,11 +80,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'OnlineLearning.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 

@@ -8,6 +8,18 @@ def academyscreen_view(request):
     return render(request, "academy/academy.html", {})#references home.html
 #context is used to get some values or variables from the database
 
+
+#def Schools_list(request):
+    #return 
+
+
+#def SchoolsForm(request):
+    #'''Insert and Delete Operation.'''
+    #return    
+
+#def SchoolDelete(request):
+    #return
+
 def model_form_upload(request):
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
