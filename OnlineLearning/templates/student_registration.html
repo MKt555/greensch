@@ -1,0 +1,39 @@
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == 'success'%}
+            <script>M.toast({html: "{{message}}", classes: 'green rounded', displayLength:2000});</script>
+        {% elif message.tags == 'info'%}
+            <script>M.toast({html: "{{message}}", classes: 'blue rounded', displayLength:2000});</script>
+        {% elif message.tags == 'warning'%}
+            <script>M.toast({html: "{{message}}", classes: 'orange rounded', displayLength:10000});</script>
+        {% elif message.tags == 'error'%}
+            <script>M.toast({html: "{{message}}", classes: 'red rounded', displayLength:10000});</script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+
+{%block content%}
+        <title>Student Registration</title>
+        <h1>Student Registration</h1>
+        <nav>
+            <div>
+                <form action="{%url 'student_registration'%}" method="post" novalidate>
+                    {% csrf_token %}
+                    {{student_signup_form.as_p}}
+                    <input type="submit" value="Submit">
+                </form>   
+            </div>
+            <div class = "nav-wrapper">
+                <li><a href="/">Home</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="/account">{{student.registration_number|title}}</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                {% else %}
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/register">Register</a></li>
+                {% endif %}
+            </div>
+        </nav>
+{% endblock content %}
+        

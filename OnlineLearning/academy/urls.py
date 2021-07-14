@@ -15,9 +15,11 @@ Including another URLconf
 """
 
 from django.urls import path
-from academy.views import academyscreen_view
+from .views import SchoolDelete, SchoolsForm, Schools_list, academyscreen_view
 
 urlpatterns = [
     path('', academyscreen_view, name = "academics"),
+    path('', Schools_list, name = "academics"),
+    path('', SchoolsForm, name = "SchoolInsert/Update"),
 ]
 

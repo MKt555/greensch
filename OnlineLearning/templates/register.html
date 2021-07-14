@@ -1,0 +1,31 @@
+{% load materializecss %}
+<body>
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="description" content="">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="">
+   <title>Registration</title>
+   <h1>Register</h1>
+   <nav>
+      <div class ="nav-wrapper">
+        <br>
+        {%block content%}
+            <a href="http://127.0.0.1:8000/academy/" target ="_blank">  Study Programmes </a>
+            <ul id = "nav-mobile" class = "right hide-on-med-and-down">
+                   <li><a href="http://127.0.0.1:8000/accounts/tutor_registration" target ="_blank">Would you like to register as a tutor?</a></li> 
+                   <br>
+                   <br>
+                   <br> 
+                   <li><a href="http://127.0.0.1:8000/accounts/student_registration" target ="_blank">Would you like to register as a student</a></li>
+                   <br>
+                   <br>
+                   <br>
+                   <li>If you already have an account, <a href ="/login"> Login </a> Instead. </li>
+                   <script src="" async defer></script>
+            </ul>
+        {% endblock content%}
+      </div>
+   </nav>
+
+</body>

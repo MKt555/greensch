@@ -3,7 +3,6 @@
 import os
 import sys
 
-
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'OnlineLearning.settings')
@@ -20,3 +19,6 @@ def main():
 
 if __name__ == '__main__':
     main()
+if __name__ == '__main__':
+    from django_secrets.startup import check
+    check()
